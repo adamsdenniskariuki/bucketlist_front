@@ -8,7 +8,7 @@ This angular app allows a user to create a bucket list and add items to it.
 ## /login
  - Allows a user to login to the bucket list app using their email and password.
 
- ## /dashboard
+## /dashboard
  - Allows a user to:
     - Create bucket lists.
     - Update bucket lists (Name).
