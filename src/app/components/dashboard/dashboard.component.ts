@@ -22,6 +22,7 @@ export class DashboardComponent implements AfterViewInit, OnInit{
   limit = 10;
   bucketResponse: bucketResponse;
   keys: string[];
+  currentKey: number;
   bucketId: number;
   errorMessages: string;
   itemName: string;
@@ -133,7 +134,8 @@ export class DashboardComponent implements AfterViewInit, OnInit{
           this.logOutUser()
       }
       if(response.messages == "create_success"){
-        window.location.reload()
+        this.bucketResponse.bucketlists.splice(0,0,response['bucketlists']);
+        Materialize.toast("Bucket list " + this.bucket + " successfully created", 5000);
       }else{
         this.errorMessages = JSON.stringify(response.messages).replace(/['\]}"{[]/g, '')
         Materialize.toast(this.errorMessages, 5000);
@@ -197,6 +199,7 @@ export class DashboardComponent implements AfterViewInit, OnInit{
 
   // set the bucket list id of the item to be created
   setId(key){
+    this.currentKey = key
     this.bucketId = jQuery('#bucketId' + key).html();
     this.bucketName = this.bucketResponse.bucketlists[key].name;
   }
@@ -256,14 +259,15 @@ export class DashboardComponent implements AfterViewInit, OnInit{
   // create item
   createItem(){
     this.itemService.createItem(this.bucketId, this.itemName).subscribe(response => {
-      this.bucketResponse = response;
       if(JSON.stringify(this.bucketResponse.messages).includes('Access Denied')){
           this.logOutUser()
       }
-      if(this.bucketResponse.messages == "create_item_success"){
-        window.location.reload()
+      if(response.messages == "create_item_success"){
+        this.bucketResponse.bucketlists[this.currentKey].items.splice(0,0,response.item)
+        Materialize.toast("Item " + this.itemName + " successfully added", 5000);
+        jQuery('.modal').modal('close');
       }else{
-        this.errorMessages = JSON.stringify(this.bucketResponse.messages).replace(/['\]}"{[]/g, '')
+        this.errorMessages = JSON.stringify(response.messages).replace(/['\]}"{[]/g, '')
         Materialize.toast(this.errorMessages, 5000);
       }
     }, errors => {

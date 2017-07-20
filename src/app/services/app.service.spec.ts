@@ -1,7 +1,6 @@
 import {TestBed, inject, async} from '@angular/core/testing';
 import {HttpModule, Http, XHRBackend, Response, ResponseOptions, BaseRequestOptions} from '@angular/http';
 import {MockBackend} from '@angular/http/testing';
-
 import {BucketService, AuthService, ItemService} from './app.service';
 
 // test AuthService
